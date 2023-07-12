@@ -18,7 +18,6 @@ class HistorialEmpresaAnterior extends Model
         'fecha_inicio_trabajo_anterior',
         'fecha_salida_trabajo_anterior',
         'motivo_salida',
-        'telefono_empresa_anterior',
     ];
 
     public function empleado()

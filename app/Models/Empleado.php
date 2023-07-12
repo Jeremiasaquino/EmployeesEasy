@@ -7,8 +7,8 @@ use App\Models\DocumentoRequirido;
 use App\Models\InformacionLarabol;
 use App\Models\InformacionBancaria;
 use App\Models\InformacionDirecion;
-use Illuminate\Database\Eloquent\Model;
 use App\Models\HistorialEmpresaAnterior;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Empleado extends Model
@@ -20,7 +20,7 @@ class Empleado extends Model
     protected $fillable = [
         'nombre', 'apellidos', 'fecha_nacimiento', 'genero', 'edad', 'nacionalidad',
         'estado_civil', 'tipo_identificacion', 'numero_identificacion', 'numero_seguro_social',
-        'numero_telefono', 'email', 'estado', 'image', 'posicione_id',
+        'numero_telefono', 'email', 'estado', 'foto', 'foto_id', 'posicione_id',
         'horario_id', 'departamento_id',
     ];
 

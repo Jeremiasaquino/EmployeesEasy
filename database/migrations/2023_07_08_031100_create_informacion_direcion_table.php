@@ -15,18 +15,15 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('empleado_id');
             $table->string('calle');
-            $table->string('numero_calle');
             $table->string('provincia');
             $table->string('municipio');
             $table->string('sector');
-            $table->string('localidad');
-            $table->string('edificio');
-            $table->string('numero_apartamento');
-            $table->string('referencia_ubicacion');
+            $table->string('numero_residencia');
+            $table->string('referencia_ubicacion')->nullable();
             $table->timestamps();
 
-    // Foreign key constraint
-    $table->foreign('empleado_id')->references('id')->on('empleados')->onDelete('cascade');
+            // Foreign key constraint
+            $table->foreign('empleado_id')->references('id')->on('empleados')->onDelete('cascade');
         });
     }
 

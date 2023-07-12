@@ -14,9 +14,12 @@ return new class extends Migration
         Schema::create('contacto_emergencia', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('empleado_id');
-            $table->string('nombre_contacto');
-            $table->string('telefono_contacto')->unique();
-            $table->string('direccion_contacto');
+            $table->string('nombre_contacto1')->nullable();
+            $table->string('telefono_contacto1')->unique()->nullable();
+            $table->string('direccion_contacto1')->nullable();
+            $table->string('nombre_contacto2')->nullable();
+            $table->string('telefono_contacto2')->unique()->nullable();
+            $table->string('direccion_contacto2')->nullable();
             $table->timestamps();
 
     // Foreign key constraint

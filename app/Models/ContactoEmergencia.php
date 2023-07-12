@@ -13,9 +13,12 @@ class ContactoEmergencia extends Model
     protected $table = 'contacto_emergencia';
 
     protected $fillable = [
-        'nombre_contacto',
-        'telefono_contacto',
-        'direccion_contacto',
+        'nombre_contacto1',
+        'telefono_contacto1',
+        'direccion_contacto1',
+        'nombre_contacto2',
+        'telefono_contacto2',
+        'direccion_contacto2',
     ];
 
     public function empleado()

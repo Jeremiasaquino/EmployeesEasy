@@ -59,6 +59,7 @@ class PosicionController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Posición creada exitosamente',
+            'msgDescription' => 'Posicion Registrada!',
             'data' => $position,
         ], 201);
     }
@@ -125,6 +126,7 @@ class PosicionController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Posición actualizada exitosamente',
+            'msgDescription' => 'Posicion Modificada!',
             'data' => $position,
         ]);
     }

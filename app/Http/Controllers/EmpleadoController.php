@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Empleado;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\CreateEmpleadoRequest;
@@ -21,6 +22,7 @@ class EmpleadoController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Empleados registrados', 'empleados' => $empleados]);
     }
+
     public function store(CreateEmpleadoRequest $request)
     {
 
@@ -37,7 +39,6 @@ class EmpleadoController extends Controller
 
         try {
             $empleado = $this->createEmpleado($request);
-
             return response()->json([
                 'success' => true,
                 'message' => 'Empleado creado exitosamente',
@@ -54,13 +55,15 @@ class EmpleadoController extends Controller
 
     private function createEmpleado(Request $request)
     {
+        $fecha_nacimiento = Carbon::createFromFormat('d-m-Y', $request->input('fecha_nacimiento'))->format('Y-m-d');
+
         $empleado = Empleado::create([
             // Campos del empleado
             'nombre' => $request->input('nombre'),
             'apellidos' => $request->input('apellidos'),
-            'fecha_nacimiento' => $request->input('fecha_nacimiento'),
-            'genero' => $request->input('genero'),
+            'fecha_nacimiento' => $fecha_nacimiento,
             'edad' => $request->input('edad'),
+            'genero' => $request->input('genero'),
             'nacionalidad' => $request->input('nacionalidad'),
             'estado_civil' => $request->input('estado_civil'),
             'tipo_identificacion' => $request->input('tipo_identificacion'),
@@ -72,15 +75,16 @@ class EmpleadoController extends Controller
             'departamento_id' => $request->input('departamento_id'),
             'horario_id' => $request->input('horario_id'),
             'estado' => $request->input('estado'),
-            'image' => $request->input('image'),
+            'foto' => $request->input('foto'),
+            'foto_id' => $request->input('foto_id'),
         ]);
 
-        $this->createInformacionDireccion($empleado, $request);
-        $this->createInformacionBancaria($empleado, $request);
-        $this->createContactoEmergencia($empleado, $request);
-        $this->createInformacionLarabol($empleado, $request);
-        $this->createDocumentoRequirido($empleado, $request);
-        $this->createHistorialEmpresaAnterior($empleado, $request);
+            $this->createInformacionDireccion($empleado, $request);
+            $this->createInformacionBancaria($empleado, $request);
+            $this->createContactoEmergencia($empleado, $request);
+            $this->createInformacionLarabol($empleado, $request);
+            $this->createDocumentoRequirido($empleado, $request);
+            $this->createHistorialEmpresaAnterior($empleado, $request);
 
         return $empleado;
     }
@@ -90,13 +94,10 @@ class EmpleadoController extends Controller
         $empleado->informacionDirecion()->create([
             // Campos de InformacionDireccion
             'calle' => $request->input('calle'),
-            'numero_calle' => $request->input('numero_calle'),
             'provincia' => $request->input('provincia'),
             'municipio' => $request->input('municipio'),
             'sector' => $request->input('sector'),
-            'localidad' => $request->input('localidad'),
-            'edificio' => $request->input('edificio'),
-            'numero_apartamento' => $request->input('numero_apartamento'),
+            'numero_residencia' => $request->input('numero_residencia'),
             'referencia_ubicacion' => $request->input('referencia_ubicacion'),
         ]);
     }
@@ -115,18 +116,24 @@ class EmpleadoController extends Controller
     {
         $empleado->contactoEmergencia()->create([
             // Campos de ContactoEmergencia
-            'nombre_contacto' => $request->input('nombre_contacto'),
-            'telefono_contacto' => $request->input('telefono_contacto'),
-            'direccion_contacto' => $request->input('direccion_contacto'),
+            'nombre_contacto1' => $request->input('nombre_contacto1'),
+            'telefono_contacto1' => $request->input('telefono_contacto1'),
+            'direccion_contacto1' => $request->input('direccion_contacto1'),
+            'nombre_contacto2' => $request->input('nombre_contacto2'),
+            'telefono_contacto2' => $request->input('telefono_contacto2'),
+            'direccion_contacto2' => $request->input('direccion_contacto2'),
         ]);
     }
 
     private function createInformacionLarabol(Empleado $empleado, Request $request)
     {
+        $fecha_contrato = Carbon::createFromFormat('d-m-Y', $request->input('fecha_contrato'))->format('Y-m-d');
+        $finalizacion_contrato = Carbon::createFromFormat('d-m-Y', $request->input('finalizacion_contrato'))->format('Y-m-d');
+
         $empleado->informacionLarabol()->create([
             // Campos de InformacionLarabol
-            'fecha_contrato' => $request->input('fecha_contrato'),
-            'finalizacion_contrato' => $request->input('finalizacion_contrato'),
+            'fecha_contrato' => $fecha_contrato,
+            'finalizacion_contrato' => $finalizacion_contrato,
             'tipo_contrato' => $request->input('tipo_contrato'),
             'tipo_salario' => $request->input('tipo_salario'),
             'salario' => $request->input('salario'),
@@ -147,16 +154,28 @@ class EmpleadoController extends Controller
 
     private function createHistorialEmpresaAnterior(Empleado $empleado, Request $request)
     {
+        if($request->has('fecha_inicio_trabajo_anterior')) {
+            $fecha_inicio_trabajo_anterior = Carbon::createFromFormat('d-m-Y', $request->input('fecha_inicio_trabajo_anterior'))->format('Y-m-d');
+        }else {
+            $fecha_inicio_trabajo_anterior = null;
+        }
+        
+        if ($request->has('fecha_salida_trabajo_anterior')) {
+            $fecha_salida_trabajo_anterior = Carbon::createFromFormat('d-m-Y', $request->input('fecha_salida_trabajo_anterior'))->format('Y-m-d');
+        } else {
+            $fecha_salida_trabajo_anterior = null;
+        }
+
         $empleado->historialEmpresaAnterior()->create([
             // Campos de HistorialEmpresaAnterior
             'nombre_empresa_anterior' => $request->input('nombre_empresa_anterior'),
             'cargo_anterior' => $request->input('cargo_anterior'),
-            'fecha_inicio_trabajo_anterior' => $request->input('fecha_inicio_trabajo_anterior'),
-            'fecha_salida_trabajo_anterior' => $request->input('fecha_salida_trabajo_anterior'),
+            'fecha_inicio_trabajo_anterior' => $fecha_inicio_trabajo_anterior,
+            'fecha_salida_trabajo_anterior' => $fecha_salida_trabajo_anterior,
             'motivo_salida' => $request->input('motivo_salida'),
-            'telefono_empresa_anterior' => $request->input('telefono_empresa_anterior'),
         ]);
     }
+    
 
     public function show($id)
     {
@@ -168,6 +187,7 @@ class EmpleadoController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Empleado encontrado', 'empleado' => $empleado]);
     }
+
 
     public function update(UpdateEmpleadoRequest $request, $id)
     {
@@ -209,11 +229,13 @@ class EmpleadoController extends Controller
 
     private function updateEmpleado(Empleado $empleado, Request $request)
     {
+        $fecha_nacimiento = Carbon::createFromFormat('d-m-Y', $request->input('fecha_nacimiento'))->format('Y-m-d');
+
         $empleado->update([
             // Campos del empleado para actualizar
             'nombre' => $request->input('nombre'),
             'apellidos' => $request->input('apellidos'),
-            'fecha_nacimiento' => $request->input('fecha_nacimiento'),
+            'fecha_nacimiento' => $fecha_nacimiento,
             'genero' => $request->input('genero'),
             'edad' => $request->input('edad'),
             'nacionalidad' => $request->input('nacionalidad'),
@@ -227,8 +249,10 @@ class EmpleadoController extends Controller
             'departamento_id' => $request->input('departamento_id'),
             'horario_id' => $request->input('horario_id'),
             'estado' => $request->input('estado'),
-            'image' => $request->input('image'),
+            'foto' => $request->input('foto'),
+            'foto_id' => $request->input('foto_id'),
         ]);
+
         $this->updateInformacionDireccion($empleado, $request);
         $this->updateInformacionBancaria($empleado, $request);
         $this->updateContactoEmergencia($empleado, $request);
@@ -242,13 +266,10 @@ class EmpleadoController extends Controller
         $empleado->informacionDirecion()->update([
             // Campos de InformacionDireccion para actualizar
             'calle' => $request->input('calle'),
-            'numero_calle' => $request->input('numero_calle'),
             'provincia' => $request->input('provincia'),
             'municipio' => $request->input('municipio'),
             'sector' => $request->input('sector'),
-            'localidad' => $request->input('localidad'),
-            'edificio' => $request->input('edificio'),
-            'numero_apartamento' => $request->input('numero_apartamento'),
+            'numero_residencia' => $request->input('numero_residencia'),
             'referencia_ubicacion' => $request->input('referencia_ubicacion'),
         ]);
     }
@@ -267,18 +288,24 @@ class EmpleadoController extends Controller
     {
         $empleado->contactoEmergencia()->update([
             // Campos de ContactoEmergencia para actualizar
-            'nombre_contacto' => $request->input('nombre_contacto'),
-            'telefono_contacto' => $request->input('telefono_contacto'),
-            'direccion_contacto' => $request->input('direccion_contacto'),
+            'nombre_contacto1' => $request->input('nombre_contacto1'),
+            'telefono_contacto1' => $request->input('telefono_contacto1'),
+            'direccion_contacto1' => $request->input('direccion_contacto1'),
+            'nombre_contacto2' => $request->input('nombre_contacto2'),
+            'telefono_contacto2' => $request->input('telefono_contacto2'),
+            'direccion_contacto2' => $request->input('direccion_contacto2'),
         ]);
     }
 
     private function updateInformacionLarabol(Empleado $empleado, Request $request)
     {
+        $fecha_contrato = Carbon::createFromFormat('d-m-Y', $request->input('fecha_contrato'))->format('Y-m-d');
+        $finalizacion_contrato = Carbon::createFromFormat('d-m-Y', $request->input('finalizacion_contrato'))->format('Y-m-d');
+
         $empleado->informacionLarabol()->update([
             // Campos de InformacionLarabol para actualizar
-            'fecha_contrato' => $request->input('fecha_contrato'),
-            'finalizacion_contrato' => $request->input('finalizacion_contrato'),
+            'fecha_contrato' => $fecha_contrato,
+            'finalizacion_contrato' => $finalizacion_contrato,
             'tipo_contrato' => $request->input('tipo_contrato'),
             'tipo_salario' => $request->input('tipo_salario'),
             'salario' => $request->input('salario'),
@@ -299,14 +326,25 @@ class EmpleadoController extends Controller
 
     private function updateHistorialEmpresaAnterior(Empleado $empleado, Request $request)
     {
+        if($request->has('fecha_inicio_trabajo_anterior')) {
+            $fecha_inicio_trabajo_anterior = Carbon::createFromFormat('d-m-Y', $request->input('fecha_inicio_trabajo_anterior'))->format('Y-m-d');
+        }else {
+            $fecha_inicio_trabajo_anterior = null;
+        }
+        
+        if ($request->has('fecha_salida_trabajo_anterior')) {
+            $fecha_salida_trabajo_anterior = Carbon::createFromFormat('d-m-Y', $request->input('fecha_salida_trabajo_anterior'))->format('Y-m-d');
+        } else {
+            $fecha_salida_trabajo_anterior = null;
+        }
+
         $empleado->historialEmpresaAnterior()->update([
             // Campos de HistorialEmpresaAnterior para actualizar
             'nombre_empresa_anterior' => $request->input('nombre_empresa_anterior'),
             'cargo_anterior' => $request->input('cargo_anterior'),
-            'fecha_inicio_trabajo_anterior' => $request->input('fecha_inicio_trabajo_anterior'),
-            'fecha_salida_trabajo_anterior' => $request->input('fecha_salida_trabajo_anterior'),
+            'fecha_inicio_trabajo_anterior' => $fecha_inicio_trabajo_anterior,
+            'fecha_salida_trabajo_anterior' => $fecha_salida_trabajo_anterior,
             'motivo_salida' => $request->input('motivo_salida'),
-            'telefono_empresa_anterior' => $request->input('telefono_empresa_anterior'),
         ]);
     }
 

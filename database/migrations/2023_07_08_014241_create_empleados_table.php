@@ -28,8 +28,9 @@ return new class extends Migration
             $table->unsignedBigInteger('posicione_id');
             $table->unsignedBigInteger('departamento_id');
             $table->unsignedBigInteger('horario_id');
-            $table->enum('estado', ['activo', 'inactivo', 'suspendido', 'vacaciones', 'en_licencia', 'terminado']);
-            $table->string('image')->nullable();
+            $table->enum('estado', ['Activo', 'Inactivo', 'Suspendido', 'Vacaciones', 'Licencia', 'Terminado']);
+            $table->string('foto')->nullable();
+            $table->string('foto_id')->nullable();
             $table->timestamps();
 
            

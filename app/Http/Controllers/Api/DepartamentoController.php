@@ -45,6 +45,7 @@ class DepartamentoController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Departamento creado exitosamente',
+            'msgDescription' => 'Departamento Registrado!',
             'data' => $departamentos,
         ], 201);
     }
@@ -102,7 +103,8 @@ class DepartamentoController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Departamento actualizado exitosamente',
+            'message' => 'Departamento actualizado exitosamente.',
+            'msgDescription' => 'Departamento Modificado!',
             'data' => $departamentos,
         ]);
     }

@@ -36,15 +36,15 @@ class HorarioController extends Controller
     {
         // Validar la solicitud
         $validator = Validator::make($request->all(), [
-            'hora_entrada' => 'required|date_format:h:i:s A', // Ejemplo: 12:00:00 PM
-            'hora_salida' => 'required|date_format:h:i:s A', // Ejemplo: 01:00:00 AM
+            'hora_entrada' => 'required|date_format:h:i A', // Ejemplo: 12:00 pm
+            'hora_salida' => 'required|date_format:h:i A', // Ejemplo: 01:00 am
             'dias_semana' => 'required|array',
             'dias_semana.*' => 'required|string|in:Lunes,Martes,Miércoles,Jueves,Viernes,Sábado,Domingo'
         ], [
             'hora_entrada.required' => 'La hora de entrada es requerida.',
-            'hora_entrada.date_format' => 'La hora de entrada debe estar en formato HH:MM:SS AM/PM.',
+            'hora_entrada.date_format' => 'La hora de entrada debe estar en formato HH:MM am/pm.',
             'hora_salida.required' => 'La hora de salida es requerida.',
-            'hora_salida.date_format' => 'La hora de salida debe estar en formato HH:MM:SS AM/PM.',
+            'hora_salida.date_format' => 'La hora de salida debe estar en formato HH:MM am/pm.',
             'dias_semana.required' => 'Los días de la semana son requeridos.',
             'dias_semana.array' => 'Los días de la semana deben ser proporcionados como un arreglo.',
             'dias_semana.*.in' => 'El valor :attribute no es un día válido de la semana.'
@@ -59,8 +59,8 @@ class HorarioController extends Controller
         }
 
         // Formatear la fecha de entrada y salida utilizando Carbon
-        $horaEntrada = Carbon::createFromFormat('h:i:s A', $request->input('hora_entrada'))->format('H:i:s');
-        $horaSalida = Carbon::createFromFormat('h:i:s A', $request->input('hora_salida'))->format('H:i:s');
+        $horaEntrada = Carbon::createFromFormat('h:i A', $request->input('hora_entrada'))->format('h:i A');
+        $horaSalida = Carbon::createFromFormat('h:i A', $request->input('hora_salida'))->format('h:i A');
 
         // Crear el nuevo horario con las fechas formateadas
         $horario = Horarios::create([
@@ -71,8 +71,9 @@ class HorarioController extends Controller
 
         return response()->json([
             'success' => true,
+            'message' => 'Horario creado exitosamente',
+            'msgDescription' => 'Horario Registrado!',
             'data' => $horario,
-            'message' => 'Horario creado exitosamente.'
         ]);
     }
 
@@ -111,8 +112,8 @@ class HorarioController extends Controller
     {
         // Validar la solicitud
         $validator = Validator::make($request->all(), [
-            'hora_entrada' => 'required|date_format:h:i:s A', // Ejemplo: 12:00:00 PM
-            'hora_salida' => 'required|date_format:h:i:s A', // Ejemplo: 01:00:00 AM
+            'hora_entrada' => 'required|date_format:h:i A', // Ejemplo: 12:00:00 PM
+            'hora_salida' => 'required|date_format:h:i A', // Ejemplo: 01:00:00 AM
             'dias_semana' => 'required|array',
             'dias_semana.*' => 'required|string|in:Lunes,Martes,Miércoles,Jueves,Viernes,Sábado,Domingo'
         ], [
@@ -144,8 +145,8 @@ class HorarioController extends Controller
         }
 
         // Formatear la fecha de entrada y salida utilizando Carbon
-        $horaEntrada = Carbon::createFromFormat('h:i:s A', $request->input('hora_entrada'))->format('H:i:s');
-        $horaSalida = Carbon::createFromFormat('h:i:s A', $request->input('hora_salida'))->format('H:i:s');
+        $horaEntrada = Carbon::createFromFormat('h:i A', $request->input('hora_entrada'))->format('h:i A');
+        $horaSalida = Carbon::createFromFormat('h:i A', $request->input('hora_salida'))->format('h:i A');
 
         // Actualizar el horario
         $horario->hora_entrada = $horaEntrada;
@@ -155,8 +156,9 @@ class HorarioController extends Controller
 
         return response()->json([
             'success' => true,
+            'message' => 'Horario actualizado exitosamente',
+            'msgDescription' => 'Horario Modificado!',
             'data' => $horario,
-            'message' => 'Horario actualizado exitosamente.'
         ]);
     }
 

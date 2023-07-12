@@ -14,13 +14,10 @@ class InformacionDirecion extends Model
 
     protected $fillable = [
         'calle',
-        'numero_calle',
         'provincia',
         'municipio',
         'sector',
-        'localidad',
-        'edificio',
-        'numero_apartamento',
+        'numero_residencia',
         'referencia_ubicacion',
     ];
 

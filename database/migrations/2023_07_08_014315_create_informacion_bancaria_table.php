@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('informacion_bancaria', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('empleado_id');
-            $table->string('nombre_banco');
-            $table->string('numero_cuenta_bancaria')->unique();
-            $table->enum('tipo_cuenta', ['cuenta_corriente', 'cuenta_ahorros']);
+            $table->string('nombre_banco')->nullable();
+            $table->string('numero_cuenta_bancaria')->unique()->nullable();
+            $table->enum('tipo_cuenta', ['Cuenta Corriente', 'Cuenta Ahorro'])->nullable();
             $table->timestamps();
 
     // Foreign key constraint

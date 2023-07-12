@@ -81,7 +81,7 @@ Route::post('/login', [LoginController::class, 'login'])->name('login');
         // Obtener los detalles de un cargo específico
         Route::get('/{id}', [PosicionController::class, 'show']);
         // Actualizar un cargo específico
-        Route::put('/{id}', [PosicioneController::class, 'update']);
+        Route::put('/{id}', [PosicionController::class, 'update']);
         // Eliminar un cargo específico
         Route::delete('/{id}', [PosicionController::class, 'destroy']);
         // Ruta para obtener los empleados de un cargo

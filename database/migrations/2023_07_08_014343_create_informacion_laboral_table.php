@@ -19,7 +19,7 @@ return new class extends Migration
             $table->date('finalizacion_contrato')->nullable();
             $table->string('tipo_contrato');
             $table->string('tipo_salario');
-            $table->decimal('salario', 10, 2);
+            $table->string('salario');
             $table->timestamps();
 
             // Foreign key constraint
