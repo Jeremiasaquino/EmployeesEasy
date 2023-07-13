@@ -36,11 +36,11 @@ class PosicionController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'name' => 'required|unique:posiciones|max:255',
+                'posicion' => 'required|unique:posiciones|max:255',
             ],
             [
-                'name.required' => 'El campo de Posicion es obligatorio.',
-                'name.unique' => 'Ya existe una posición con este nombre en el departamento seleccionado.',
+                'posicion.required' => 'El campo de Posicion es obligatorio.',
+                'posicion.unique' => 'Ya existe una posición con este nombre en el departamento seleccionado.',
             ]
         );
 
@@ -53,7 +53,7 @@ class PosicionController extends Controller
         }
 
         $position = Posiciones::create([
-            'name' => $request->input('name'),
+            'posicion' => $request->input('posicion'),
         ]);
 
         return response()->json([
@@ -97,10 +97,10 @@ class PosicionController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:posiciones|max:255',
+            'posicion' => 'required|unique:posiciones|max:255',
         ], [
-            'name.required' => 'El campo de Posicion es obligatorio.',
-            'name.unique' => 'Ya existe una posición con este nombre en el departamento seleccionado.',
+            'posicion.required' => 'El campo de Posicion es obligatorio.',
+            'posicion.unique' => 'Ya existe una posición con este nombre en el campo seleccionado.',
         ]);
 
         if ($validator->fails()) {
@@ -120,7 +120,7 @@ class PosicionController extends Controller
             ], 404);
         }
 
-        $position->name = $request->input('name');
+        $position->posicion = $request->input('posicion');
         $position->save();
 
         return response()->json([
@@ -164,11 +164,27 @@ class PosicionController extends Controller
      */
     public function getEmployees($positionId)
     {
-        $employees = Empleado::where('posicione_id', $positionId)->get();
+        $posiciones = Posiciones::find($positionId);
+
+        if (!$posiciones) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Posicion no encontrado',
+            ], 404);
+        }
+
+        $empleados = $posiciones->empleado;
 
         return response()->json([
             'success' => true,
-            'data' => $employees,
+            'data' => $empleados,
         ]);
+
+        // $employees = Empleado::where('posicione_id', $positionId)->get();
+
+        // return response()->json([
+        //     'success' => true,
+        //     'data' => $employees,
+        // ]);
     }
 }

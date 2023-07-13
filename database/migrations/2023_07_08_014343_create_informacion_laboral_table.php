@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('tipo_contrato');
             $table->string('tipo_salario');
             $table->string('salario');
-            $table->timestamps();
+            // $table->timestamps();
 
             // Foreign key constraint
             $table->foreign('empleado_id')->references('id')->on('empleados')->onDelete('cascade');

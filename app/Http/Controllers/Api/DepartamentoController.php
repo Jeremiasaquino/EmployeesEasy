@@ -32,14 +32,14 @@ class DepartamentoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:departamentos|max:255',
+            'departamento' => 'required|unique:departamentos|max:255',
         ], [
-            'name.required' => 'El campo de Departamento es obligatorio.',
-            'name.unique' => 'Ya existe un departamento con ese nombre.',
+            'departamento.required' => 'El campo de Departamento es obligatorio.',
+            'departamento.unique' => 'Ya existe un departamento con ese nombre.',
         ]);
 
         $departamentos = Departamentos::create([
-            'name' => $request->input('name'),
+            'departamento' => $request->input('departamento'),
         ]);
 
         return response()->json([
@@ -83,10 +83,10 @@ class DepartamentoController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|unique:departamentos|max:255',
+            'departamento' => 'required|unique:departamentos|max:255',
         ], [
-            'name.required' => 'El campo de Departamento es obligatorio.',
-            'name.unique' => 'Ya existe un departamento con ese nombre.',
+            'departamento.required' => 'El campo de Departamento es obligatorio.',
+            'departamento.unique' => 'Ya existe un departamento con ese nombre.',
         ]);
 
         $departamentos = Departamentos::find($id);
@@ -98,7 +98,7 @@ class DepartamentoController extends Controller
             ], 404);
         }
 
-        $departamentos->name = $request->input('name');
+        $departamentos->departamento = $request->input('departamento');
         $departamentos->save();
 
         return response()->json([

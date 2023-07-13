@@ -25,7 +25,7 @@ class CreateEmpleadoRequest extends FormRequest
              // Reglas de validación aquí
              'nombre' => 'required|string',
              'apellidos' => 'required|string',
-             'fecha_nacimiento' => 'required|date_format:d-m-Y',
+             'fecha_nacimiento' => 'required|date_format:Y-m-d',
              'genero' => 'required|in:Femenino,Masculino,Otro',
              'edad' => 'required|integer',
              'nacionalidad' => 'required|string',
@@ -51,7 +51,7 @@ class CreateEmpleadoRequest extends FormRequest
              'referencia_ubicacion' => 'nullable|string',
 
              'nombre_banco' => 'nullable|string',
-             'numero_cuenta_bancaria' => 'nullable|numeric|unique:informacion_bancaria',
+             'numero_cuenta_bancaria' => 'nullable|string|unique:informacion_bancaria',
              'tipo_cuenta' => 'nullable|in:Cuenta Corriente, Cuenta Ahorro|',
 
              'nombre_contacto1' => 'nullable|string',
@@ -61,8 +61,8 @@ class CreateEmpleadoRequest extends FormRequest
              'telefono_contacto2' => 'nullable|unique:contacto_emergencia|string',
              'direccion_contacto2' => 'nullable|string',
              
-             'fecha_contrato' => 'required|date_format:d-m-Y',
-             'finalizacion_contrato' => 'required|date_format:d-m-Y',
+             'fecha_contrato' => 'required|date_format:Y-m-d',
+             'finalizacion_contrato' => 'nullable|date_format:Y-m-d',
              'tipo_contrato' => 'required|',
              'tipo_salario' => 'required|',
              'salario'=> 'required|',
@@ -75,8 +75,8 @@ class CreateEmpleadoRequest extends FormRequest
 
              'nombre_empresa_anterior' => 'nullable|string',
              'cargo_anterior' => 'nullable|string',
-             'fecha_inicio_trabajo_anterior' => 'nullable|date_format:d-m-Y',
-             'fecha_salida_trabajo_anterior' => 'nullable|date_format:d-m-Y',
+             'fecha_inicio_trabajo_anterior' => 'nullable|date_format:Y-m-d',
+             'fecha_salida_trabajo_anterior' => 'nullable|date_format:Y-m-d',
              'motivo_salida' => 'nullable|string',
         ];
     }

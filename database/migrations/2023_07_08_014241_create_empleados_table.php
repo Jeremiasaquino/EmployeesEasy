@@ -31,7 +31,7 @@ return new class extends Migration
             $table->enum('estado', ['Activo', 'Inactivo', 'Suspendido', 'Vacaciones', 'Licencia', 'Terminado']);
             $table->string('foto')->nullable();
             $table->string('foto_id')->nullable();
-            $table->timestamps();
+            // $table->timestamps();
 
            
         });

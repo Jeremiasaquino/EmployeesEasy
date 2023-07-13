@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('dias_semana');
             $table->time('hora_entrada');
             $table->time('hora_salida');
-            $table->timestamps();
+            // $table->timestamps();
         });
     }
 

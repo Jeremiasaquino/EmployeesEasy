@@ -10,7 +10,7 @@ class Posiciones extends Model
 {
     use HasFactory;
     protected $table = 'posiciones';
-    protected $fillable = ['name'];
+    protected $fillable = ['posicion'];
 
     public function empleado()
     {

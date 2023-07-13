@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('seguro_social')->nullable();
             $table->string('titulos_certificados')->nullable();
             $table->string('otros_documentos')->nullable();
-            $table->timestamps();
+            // $table->timestamps();
+            
             // Foreign key constraint
             $table->foreign('empleado_id')->references('id')->on('empleados')->onDelete('cascade');
         });
