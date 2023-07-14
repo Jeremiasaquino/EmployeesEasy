@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('sector');
             $table->string('numero_residencia');
             $table->string('referencia_ubicacion')->nullable();
-            // $table->timestamps();
+            $table->timestamps();
 
             // Foreign key constraint
             $table->foreign('empleado_id')->references('id')->on('empleados')->onDelete('cascade');

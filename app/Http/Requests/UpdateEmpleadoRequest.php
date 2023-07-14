@@ -55,10 +55,10 @@ class UpdateEmpleadoRequest extends FormRequest
             'tipo_cuenta' => 'nullable|in:Cuenta Corriente, Cuenta Ahorro|',
 
             'nombre_contacto1' => 'nullable|string',
-            'telefono_contacto1' => 'sometimes|string|unique:contacto_emergencia,telefono_contacto1,' . $this->route('id'),
+            'telefono_contacto1' => 'nullable|string|unique:contacto_emergencia,telefono_contacto1,' . $this->route('id'),
             'direccion_contacto1' => 'nullable|string',
             'nombre_contacto2' => 'nullable|string',
-            'telefono_contacto2' => 'sometimes||string|unique:contacto_emergencia,telefono_contacto2,'. $this->route('id'),
+            'telefono_contacto2' => 'nullable||string|unique:contacto_emergencia,telefono_contacto2,'. $this->route('id'),
             'direccion_contacto2' => 'nullable|string',
             
             'fecha_contrato' => 'required|date_format:Y-m-d',

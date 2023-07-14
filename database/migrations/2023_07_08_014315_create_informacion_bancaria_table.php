@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nombre_banco')->nullable();
             $table->string('numero_cuenta_bancaria')->unique()->nullable();
             $table->enum('tipo_cuenta', ['Cuenta Corriente', 'Cuenta Ahorro'])->nullable();
-            // $table->timestamps();
+            $table->timestamps();
 
     // Foreign key constraint
             $table->foreign('empleado_id')->references('id')->on('empleados')->onDelete('cascade');

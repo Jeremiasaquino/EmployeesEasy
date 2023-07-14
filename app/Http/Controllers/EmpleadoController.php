@@ -46,7 +46,7 @@ class EmpleadoController extends Controller
 
     public function store(CreateEmpleadoRequest $request)
     {
-
+       
         // Validar los datos del formulario
         $validator = Validator::make($request->all(), $request->rules(), $request->messages());
 
@@ -57,9 +57,11 @@ class EmpleadoController extends Controller
                 'errors' => $validator->errors()
             ], 422);
         }
+       
 
         try {
             $empleado = $this->createEmpleado($request);
+
             return response()->json([
                 'success' => true,
                 'message' => 'Empleado creado exitosamente',
@@ -101,21 +103,16 @@ class EmpleadoController extends Controller
         ]);
 
          // Obtener el nombre del departamento, posición y horario
-            $departamento = Departamentos::find($empleado->departamento_id);
-            $posicion = Posiciones::find($empleado->posicione_id);
-            $horario = Horarios::find($empleado->horario_id);
+            // $departamento = Departamentos::find($empleado->departamento_id);
+            // $posicion = Posiciones::find($empleado->posicione_id);
+            // $horario = Horarios::find($empleado->horario_id);
 
-            // Agregar los nombres al objeto empleado
-            $empleado['departamento'] = isset($departamento) ? $departamento->departamento : null;
-            $empleado['posicion'] = isset($posicion) ? $posicion->posicion : null;
-
-            if (isset($horario)) {
-                foreach ($horario->getAttributes() as $key => $value) {
-                    if ($key != "id") {
-                        $empleado[$key] = $value;
-                    }
-                }
-            }
+            // // Agregar los nombres al objeto empleado
+            // $empleado['departamento'] = isset($departamento) ? $departamento->departamento : null;
+            // $empleado['posicion'] = isset($posicion) ? $posicion->posicion : null;
+            // $empleado['dias_semana'] = isset($horario) ? $horario->dias_semana : null;
+            // $empleado['hora_entrada'] = isset($horario) ? $horario->hora_entrada : null;
+            // $empleado['hora_salida'] = isset($horario) ? $horario->hora_salida : null;
 
             $this->createInformacionDireccion($empleado, $request);
             $this->createInformacionBancaria($empleado, $request);
@@ -123,6 +120,8 @@ class EmpleadoController extends Controller
             $this->createInformacionLarabol($empleado, $request);
             $this->createDocumentoRequirido($empleado, $request);
             $this->createHistorialEmpresaAnterior($empleado, $request);
+
+            $empleado = Empleado::with('informacionDirecion', 'informacionBancaria', 'contactoEmergencia', 'informacionLarabol', 'documentoRequirido', 'historialEmpresaAnterior', 'departamento', 'posicione', 'horario')->find($empleado);
 
         return $empleado;
     }
@@ -202,6 +201,7 @@ class EmpleadoController extends Controller
     }
     
 
+
     public function show($id)
     {
         $empleado = Empleado::with('informacionDirecion', 'informacionBancaria', 'contactoEmergencia', 'informacionLarabol', 'documentoRequirido', 'historialEmpresaAnterior')->find($id);
@@ -218,6 +218,7 @@ class EmpleadoController extends Controller
     {
         // Buscar el empleado por su ID
         $empleado = Empleado::find($id);
+        // $empleado = Empleado::with('informacionDirecion', 'informacionBancaria', 'contactoEmergencia', 'informacionLarabol', 'documentoRequirido', 'historialEmpresaAnterior', 'departamento', 'posicione', 'horario')->find($id);
 
         if (!$empleado) {
             return response()->json(['success' => false, 'message' => 'No se encontró un empleado con el ID especificado'], 404);
@@ -237,6 +238,7 @@ class EmpleadoController extends Controller
 
         try {
             $this->updateEmpleado($empleado, $request);
+            $empleado = Empleado::with('informacionDirecion', 'informacionBancaria', 'contactoEmergencia', 'informacionLarabol', 'documentoRequirido', 'historialEmpresaAnterior', 'departamento', 'posicione', 'horario')->find($id);
 
             return response()->json([
                 'success' => true,
@@ -278,21 +280,18 @@ class EmpleadoController extends Controller
             'foto_id' => $request->input('foto_id'),
         ]);
 
-        $departamento = Departamentos::find($empleado->departamento_id);
-        $posicion = Posiciones::find($empleado->posicione_id);
-        $horario = Horarios::find($empleado->horario_id);
+        // $departamento = Departamentos::find($empleado->departamento_id);
+        // $posicion = Posiciones::find($empleado->posicione_id);
+        // $horario = Horarios::find($empleado->horario_id);
 
-        // Agregar los nombres al objeto empleado
-        $empleado['departamento'] = isset($departamento) ? $departamento->departamento : null;
-        $empleado['posicion'] = isset($posicion) ? $posicion->posicion : null;
+        // // Agregar los nombres al objeto empleado
+        // $empleado['departamento'] = isset($departamento) ? $departamento->departamento : null;
+        // $empleado['posicion'] = isset($posicion) ? $posicion->posicion : null;
+        // $empleado['dias_semana'] = isset($horario) ? $horario->dias_semana : null;
+        // $empleado['hora_entrada'] = isset($horario) ? $horario->hora_entrada : null;
+        // $empleado['hora_salida'] = isset($horario) ? $horario->hora_salida : null;
 
-        if (isset($horario)) {
-            foreach ($horario->getAttributes() as $key => $value) {
-                if ($key != "id") {
-                    $empleado[$key] = $value;
-                }
-            }
-        }
+       
 
         $this->updateInformacionDireccion($empleado, $request);
         $this->updateInformacionBancaria($empleado, $request);
@@ -300,10 +299,12 @@ class EmpleadoController extends Controller
         $this->updateInformacionLarabol($empleado, $request);
         $this->updateDocumentoRequirido($empleado, $request);
         $this->updateHistorialEmpresaAnterior($empleado, $request);
+
     }
 
     private function updateInformacionDireccion(Empleado $empleado, Request $request)
     {
+        
         $empleado->informacionDirecion()->update([
             // Campos de InformacionDireccion para actualizar
             'calle' => $request->input('calle'),

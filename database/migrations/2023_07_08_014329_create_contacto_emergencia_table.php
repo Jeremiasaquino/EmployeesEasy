@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('nombre_contacto2')->nullable();
             $table->string('telefono_contacto2')->unique()->nullable();
             $table->string('direccion_contacto2')->nullable();
-            // $table->timestamps();
+            $table->timestamps();
 
     // Foreign key constraint
             $table->foreign('empleado_id')->references('id')->on('empleados')->onDelete('cascade');

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('fecha_inicio_trabajo_anterior')->nullable();
             $table->date('fecha_salida_trabajo_anterior')->nullable();
             $table->string('motivo_salida')->nullable();
-            // $table->timestamps();
+            $table->timestamps();
 
             // Foreign key constraint
             $table->foreign('empleado_id')->references('id')->on('empleados')->onDelete('cascade');
